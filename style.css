@@ -1,0 +1,28 @@
+body{
+    overflow-x: hidden;
+    overflow-y: hidden;
+    background-color: #fff;
+}
+
+.pikachu {
+    width: 180px;
+    height: 180px;
+    position: absolute;
+    background-image: url("./assets/img/pikachuback.gif");
+    background-position: center;
+    background-repeat: no-repeat;
+
+}
+
+.screenMsg {
+    position: absolute;
+    margin-left: -25%;
+    top: 50%;
+    left: 50%;
+    width: 720px;
+    height: 621px;
+    display: none;
+}
+
+
+
