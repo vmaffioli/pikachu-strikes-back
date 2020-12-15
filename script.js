@@ -3,9 +3,10 @@ var speedS;
 var screenSzW, screenSzH;
 var game;
 var frames;
-var countBombs, painelCountBombs, speedB, createTimeB;
-var totalBombs;
+var countEnemy, painelcountEnemy, speedE, createTimeE;
+var totalEnemies;
 var ashLifePoints;
+
 
 function keyDw() {
     var key=event.keyCode;
@@ -42,38 +43,48 @@ function keyUp() {
 
 }
 
-function createBomb() {
+function createEnemy() {
     if (game) {
         var y = 0;
-        var x = Math.random()*screenSzW;
-        var bomb = document.createElement("div");
+        var x = Math.random()*screenSzW - 50;
+        var enemy = document.createElement("div");
         var att1 = document.createAttribute("class");
         var att2 = document.createAttribute("style");
 
-        att1.value = "bomb";
+        att1.value = "enemy";
         att2.value = "top:" + y + "px; left:" + x + "px;";
-        bomb.setAttributeNode(att1);
-        bomb.setAttributeNode(att2);
+        enemy.setAttributeNode(att1);
+        enemy.setAttributeNode(att2);
 
-        document.body.appendChild(bomb);
-        countBombs--;
+        var z = Math.random()*999;
+        console.log(z);
+
+        if (z >= 499) {
+            console.log("acima");
+            enemy.style.transform = "scaleX(-1)";
+        } else {
+            console.log("abaixo");
+        }
+
+        document.body.appendChild(enemy);
+        countEnemy--;
 
     }
 }
 
-function bombControl() {
-    totalBombs = document.getElementsByClassName("bomb");
-    var size = totalBombs.length;
+function enemyControl() {
+    totalEnemies = document.getElementsByClassName("enemy");
+    var size = totalEnemies.length;
 
     for(var i = 0;i < size; i++){
-        if (totalBombs[i]){
-            var pi = totalBombs[i].offsetTop;
-            pi += speedB;
-            totalBombs[i].style.top = pi + "px";
+        if (totalEnemies[i]){
+            var pi = totalEnemies[i].offsetTop;
+            pi += speedE;
+            totalEnemies[i].style.top = pi + "px";
 
             if (pi > screenSzH) {
                 ashLifePoints -= 15;
-                totalBombs[i].remove();
+                totalEnemies[i].remove();
 
             }
 
@@ -117,7 +128,7 @@ function shotControl () {
 }
 
 function playerControl() {  
-   pospy += diryP * speedP;
+   pospy = 500;
    pospx += dirxP * speedP;
    player.style.top = pospy + "px";
    player.style.left = pospx + "px";
@@ -129,7 +140,7 @@ function gameLoop() {
         // control functions
         playerControl();
         shotControl();
-        bombControl();
+        enemyControl();
 
     }
     frames = requestAnimationFrame(gameLoop);
@@ -153,11 +164,11 @@ function init() {
     player.style.top = pospy + "px";
     player.style.left = pospx + "px";
 
-    // ini bomb
-    clearInterval(createTimeB);
-    countBombs = 150;
-    speedB = 3;
-    createTimeB = setInterval(createBomb, 1700);
+    // ini enemy
+    clearInterval(createTimeE);
+    countEnemy = 150;
+    speedE = 3;
+    createTimeE = setInterval(createEnemy, 1700);
 
     // ash
     ashLifePoints = 300;

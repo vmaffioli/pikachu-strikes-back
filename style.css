@@ -40,17 +40,18 @@ body{
 }
 
 .shotP {
-    width: 6px;
-    height: 6px;
-    background-color: #000;
+    width: 600px;
+    height: 600px;
+    background-image: url("./assets/img/bolt.gif");
+    background-repeat: no-repeat;
     border-radius: 6px;
     position: absolute;
 }
 
-.bomb {
+.enemy {
     width: 100px;
     height: 100px;
-    background-image: url("./assets/img/badspearow3.gif");
+    background-image: url("./assets/img/badspearow.gif");
     background-clip: content-box;
     position: absolute;
     
