@@ -10,11 +10,15 @@ function keyDw(){
     }else if(key==40){//down
         diryP = 1;
     }
+
     if(key==37){//left
         dirxP =- 1;
+        player.style.transform = "scaleX(-1)";
     }else if(key==39){//right
         dirxP = 1;
+        player.style.transform = "scaleX(1)";
     }
+    
     if(key == 32){//spacebar / shoot
         //shot
     
