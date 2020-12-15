@@ -24,5 +24,37 @@ body{
     display: none;
 }
 
+#medidorPlaneta {
+    border: 2px solid #000;
+    width: 300px;
+    height: 20px;
+    background-color: #fff;
+
+}
+
+#barraPlaneta {
+    width: 300px;
+    height: 20px;
+    background-color: #55f;
+    
+}
+
+.shotP {
+    width: 6px;
+    height: 6px;
+    background-color: #000;
+    border-radius: 6px;
+    position: absolute;
+}
+
+.bomb {
+    width: 100px;
+    height: 100px;
+    background-image: url("./assets/img/badspearow3.gif");
+    background-clip: content-box;
+    position: absolute;
+    
+}
+
 
 
