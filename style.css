@@ -14,20 +14,24 @@ body{
     background-image: url("./assets/img/pikachuback.gif");
     background-position: center;
     background-repeat: no-repeat;
+    z-index: 2;
 
 }
 
-.screenMsg {
+.screen-msg {
     position: absolute;
     margin-left: -25%;
-    top: 50%;
+    top: 50px;
     left: 50%;
     width: 720px;
     height: 621px;
     display: none;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 3;
 }
 
-#medidorPlaneta {
+#ash-hud {
     border: 2px solid #000;
     width: 300px;
     height: 20px;
@@ -35,14 +39,14 @@ body{
 
 }
 
-#barraPlaneta {
+#ash-lifebar {
     width: 300px;
     height: 20px;
     background-color: #55f;
     
 }
 
-.shotP {
+.player-shot {
     width: 50px;
     height: 50px;
     background-image: url("./assets/img/bolt.gif");
@@ -57,23 +61,29 @@ body{
     background-image: url("./assets/img/badspearow.gif");
     background-clip: content-box;
     position: absolute;
+    z-index: 1;
     
 }
 
 
-.explosionEnemy {
+.enemy-explosion {
     width: 100px;
     height: 100px;
     position: absolute;
     
 }
 
-.ashDamage {
+.ash-damage {
     width: 100px;
     height: 100px;
     position: absolute;
     
 }
 
+.video-player {
+    display: none;
+    position: absolute;
+
+}
 
 
