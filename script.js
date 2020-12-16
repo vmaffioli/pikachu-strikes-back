@@ -6,6 +6,7 @@ var frames;
 var countEnemy, painelcountEnemy, speedE, createTimeE;
 var totalEnemies;
 var ashLifePoints;
+var ie, isound;
 
 
 function keyDw() {
@@ -60,7 +61,6 @@ function createEnemy() {
         console.log(z);
 
         if (z >= 499) {
-            console.log("acima");
             enemy.style.transform = "scaleX(-1)";
         } else {
             console.log("abaixo");
@@ -105,6 +105,8 @@ function shot(x, y) {
     s.setAttributeNode(att2);
     document.body.appendChild(s);
 
+
+
 }
 
 function shotControl () {
@@ -116,6 +118,9 @@ function shotControl () {
             var posShot = shots[i].offsetTop;
             posShot -= speedS;
             shots[i].style.top = posShot + "px";
+
+            collisionShotEnemy(shots[i]);
+
             if (posShot < 0){
                 //shots[i].remove();
                 document.body.removeChild(shots[i]);
@@ -126,6 +131,93 @@ function shotControl () {
     }
 
 }
+
+function collisionShotEnemy(shot) {
+    var size = totalEnemies.length;
+
+    for (var i = 0; i < size; i++) {
+        if(totalEnemies[i]) {
+            if(
+                (
+                    (shot.offsetTop <= (totalEnemies[i].offsetTop + 50)) && // cima tiro com baixo bomba
+                    ((shot.offsetTop+50) >= (totalEnemies[i].offsetTop))   // baixo tiro com cima bomba
+                )
+                &&
+                (
+                    (shot.offsetLeft <= (totalEnemies[i].offsetLeft + 80)) && //esquerda tiro com direita bomba
+                    ((shot.offsetLeft+20) >= (totalEnemies[i].offsetLeft)) //direita tiro com esquerda bomba
+                )
+            ){
+                createDamageView(1, totalEnemies[i].offsetLeft-50, totalEnemies[i].offsetTop-80);
+                totalEnemies[i].remove();
+                shot.remove();
+            }
+        }
+    }
+
+
+}
+
+function createDamageView(type, x, y) { // 1 explosion      2 ashDamage
+    if (document.getElementById("damage" + (ie - 1))) {
+        document.getElementById("damage" + (ie - 1)).remove();
+    }
+    var explosion = document.createElement("div");
+    var image = document.createElement("img");
+    var sound = document.createElement("audio");
+
+    //div attr
+    var att1 = document.createAttribute("class");
+    var att2 = document.createAttribute("style");
+    var att3 = document.createAttribute("id");
+
+    // img attr 
+    var att4 = document.createAttribute("src");
+
+
+    //audio attr 
+    var att5 = document.createAttribute("src");
+    var att6 = document.createAttribute("id");
+
+    att3.value="damage" + ie;
+
+    if (type == 1){
+        att1.value="explosionEnemy";
+        att2.value="top:" + y + "px; left:" + x + "px;";
+        att4.value= "./assets/img/explosion2.gif?"+new Date();
+    } else {
+        att1.value="ashDamage";
+        att2.value="top:" + (screenSzH-100) + "px;left:" + (x-100) + "px;";
+        att4.value= "./assets/img/Effect.gif?"+new Date();
+    }
+
+    att5.value = "./assets/audio/electricshock.mp3?"+new Date();
+    att6.value = "sound" + isound;
+   
+    explosion.setAttributeNode(att1);
+    explosion.setAttributeNode(att2);
+    explosion.setAttributeNode(att3);
+    image.setAttributeNode(att4);
+    sound.setAttributeNode(att5);
+    sound.setAttributeNode(att6);
+    explosion.appendChild(image);
+    explosion.appendChild(sound);
+    document.body.appendChild(explosion);
+    document.getElementById("sound" + isound).play();
+
+    
+   
+    
+
+    ie++;
+    isound++;
+
+
+
+}
+
+
+
 
 function playerControl() {  
    pospy = 500;
@@ -141,6 +233,7 @@ function gameLoop() {
         playerControl();
         shotControl();
         enemyControl();
+
 
     }
     frames = requestAnimationFrame(gameLoop);
@@ -158,8 +251,8 @@ function init() {
     dirxP = diryP = 0;
     pospy = screenSzH / 2;
     pospx = screenSzW / 2;
-    speedP = 5;
-    speedS = 5;
+    speedP = 10;
+    speedS = 10;
     player = document.getElementById("pikachu");
     player.style.top = pospy + "px";
     player.style.left = pospx + "px";
@@ -167,11 +260,15 @@ function init() {
     // ini enemy
     clearInterval(createTimeE);
     countEnemy = 150;
-    speedE = 3;
+    speedE = 2;
     createTimeE = setInterval(createEnemy, 1700);
 
     // ash
     ashLifePoints = 300;
+
+    // explosions and sounds
+    ie=isound=0;
+
 
 
     gameLoop();
@@ -179,6 +276,7 @@ function init() {
 
 
 }
+
 
 window.addEventListener("load",init);
 document.addEventListener("keydown", keyDw);
