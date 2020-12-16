@@ -47,24 +47,23 @@ function keyUp() {
 function createEnemy() {
     if (game) {
         var y = 0;
-        var x = Math.random()*screenSzW - 50;
+        var x = Math.random()*screenSzW;
         var enemy = document.createElement("div");
         var att1 = document.createAttribute("class");
         var att2 = document.createAttribute("style");
+        var z = Math.random()*999;
+
 
         att1.value = "enemy";
         att2.value = "top:" + y + "px; left:" + x + "px;";
         enemy.setAttributeNode(att1);
         enemy.setAttributeNode(att2);
 
-        var z = Math.random()*999;
-        console.log(z);
 
         if (z >= 499) {
             enemy.style.transform = "scaleX(-1)";
-        } else {
-            console.log("abaixo");
         }
+        
 
         document.body.appendChild(enemy);
         countEnemy--;
@@ -95,23 +94,40 @@ function enemyControl() {
 }
 
 function shot(x, y) {
+
     var s = document.createElement("div");
     var att1 = document.createAttribute("class");
     var att2 = document.createAttribute("style");
+    var pikachuVoices = Math.random()*999;
 
+    if (pikachuVoices <= 333) {
+        document.getElementById("voices-pikachu-01").play();
+
+    } else if ((pikachuVoices >= 334) && (pikachuVoices <= 666)) {
+        document.getElementById("voices-pikachu-02").play();
+
+    } else if ((pikachuVoices >= 667) && (pikachuVoices <= 999)) {
+        document.getElementById("voices-pikachu-03").play();
+
+    }
+   
     att1.value = "shotP";
     att2.value = "top:" + y + "px; left:" + x + "px";
+   
     s.setAttributeNode(att1);
     s.setAttributeNode(att2);
+
+
+
     document.body.appendChild(s);
-
-
-
+    
 }
 
 function shotControl () {
+
     var shots = document.getElementsByClassName("shotP");
     var size = shots.length;
+
 
     for (var i = 0; i < size; i++) {
         if(shots[i]) {
@@ -125,10 +141,13 @@ function shotControl () {
                 //shots[i].remove();
                 document.body.removeChild(shots[i]);
 
+
             }
         }
 
     }
+
+
 
 }
 
@@ -151,6 +170,7 @@ function collisionShotEnemy(shot) {
                 createDamageView(1, totalEnemies[i].offsetLeft-50, totalEnemies[i].offsetTop-80);
                 totalEnemies[i].remove();
                 shot.remove();
+
             }
         }
     }
@@ -224,6 +244,7 @@ function playerControl() {
    pospx += dirxP * speedP;
    player.style.top = pospy + "px";
    player.style.left = pospx + "px";
+
 
 }
 
