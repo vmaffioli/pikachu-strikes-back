@@ -1,59 +1,108 @@
+@font-face {
+    font-family: 'pressStart';
+    src: url('./assets/fonts/PressStart2P-Regular.ttf');
+}  
+
+@font-face {
+    font-family: 'pokemon';
+    src: url('./assets/fonts/PokemonSolidNormal-xyWR.ttf');
+}  
+
+* {
+    font-family: 'pressStart', 'pokemon', sans-serif;
+  }
+
+  
+  @-webkit-keyframes slide-left-right {
+    0% {
+        -webkit-transform: translateX(-900px);
+                transform: translateX(-900px);
+      }
+      100% {
+        -webkit-transform: translateX(0px);
+                transform: translateX(0px);
+    }
+  }
+
+  @keyframes slide-left-right {
+    0% {
+      -webkit-transform: translateX(-900px);
+              transform: translateX(-900px);
+    }
+    100% {
+      -webkit-transform: translateX(0px);
+              transform: translateX(0px);
+    }
+  }
+
+  @-webkit-keyframes slide-right-left{
+    0% {
+      -webkit-transform: translateX(700px);
+              transform: translateX(700px);
+    }
+    100% {
+      -webkit-transform: translateX(0px);
+              transform: translateX(0px);
+    }
+  }
+
+  @keyframes slide-right-left{
+    0% {
+        -webkit-transform: translateX(700px);
+                transform: translateX(700px);
+      }
+      100% {
+        -webkit-transform: translateX(0px);
+                transform: translateX(0px);
+    }
+  }
+
+  @-webkit-keyframes scale-up-center {
+    0% {
+      -webkit-transform: scale(0.9);
+              transform: scale(0.9);
+    }
+    100% {
+      -webkit-transform: scale(1);
+              transform: scale(1);
+    }
+  }
+  @keyframes scale-up-center {
+    0% {
+      -webkit-transform: scale(0.9);
+              transform: scale(0.9);
+    }
+    100% {
+      -webkit-transform: scale(1);
+              transform: scale(1);
+    }
+  }
+  
+
+
+
 body{
     overflow-x: hidden;
     overflow-y: hidden;
-    background-color: #fff;
-    left: 150px;
-    right: 150px;
 
-}
-
-.pikachu {
-    width: 180px;
-    height: 180px;
-    position: absolute;
-    background-image: url("./assets/img/pikachuback.gif");
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: 2;
 
 }
 
 .screen-msg {
-    position: absolute;
-    margin-left: -25%;
-    top: 50px;
+    position: fixed;
+    top: 30px;
     left: 50%;
-    width: 720px;
-    height: 621px;
+    margin-right: -50%;
+    transform: translate(-50%);
+    width: 1000px;
+    height: 600px;
     display: none;
     background-repeat: no-repeat;
     background-position: center;
+    background-size: cover;
     z-index: 3;
 }
 
-#ash-hud {
-    border: 2px solid #000;
-    width: 300px;
-    height: 20px;
-    background-color: #fff;
-
-}
-
-#ash-lifebar {
-    width: 300px;
-    height: 20px;
-    background-color: #55f;
-    
-}
-
-.player-shot {
-    width: 50px;
-    height: 50px;
-    background-image: url("./assets/img/bolt.gif");
-    background-repeat: no-repeat;
-    border-radius: 6px;
-    position: absolute;
-}
 
 .enemy {
     width: 100px;
@@ -65,6 +114,14 @@ body{
     
 }
 
+.player-shot {
+    width: 50px;
+    height: 50px;
+    background-image: url("./assets/img/bolt.gif");
+    background-repeat: no-repeat;
+    border-radius: 6px;
+    position: absolute;
+}
 
 .enemy-explosion {
     width: 100px;
@@ -85,5 +142,269 @@ body{
     position: absolute;
 
 }
+
+.main-title{
+    position: absolute;
+    font-family: pokemon;
+    justify-content: center;
+    text-shadow: 20px 20px 0 #000,
+    -1px 1px 0 #000,
+    1px -1px 0 #000,
+    -1px -1px 0 #000,
+    0px 1px 0 #000,
+    0px -1px 0 #000,
+    -1px 0px 0 #000,
+    1px 0px 0 #000,
+    2px 2px 0 #000,
+    -2px 2px 0 #000,
+    2px -2px 0 #000,
+    -2px -2px 0 #000,
+    0px 2px 0 #000,
+    0px -2px 0 #000,
+    -2px 0px 0 #000,
+    2px 0px 0 #000,
+    1px 2px 0 #000,
+    -1px 2px 0 #000,
+    1px -2px 0 #000,
+    -1px -2px 0 #000,
+    2px 1px 0 #000,
+    -2px 1px 0 #000,
+    2px -1px 0 #000,
+    -2px -1px 0 #000;
+    -webkit-animation: slide-left-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    animation: slide-left-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+
+    
+}
+
+.chart-wrapper{
+    position: relative;
+  }
+  
+  .pulse{
+    animation-iteration-count: infinite;
+  }
+  
+  .icon-wrapper{
+    position: absolute;
+    z-index: 1;
+    width: 60px;
+    height: 60px;
+    background: orange;  
+    padding-top: 13px;
+    border: 2px solid #fff;
+    border-radius: 50%; 
+    text-align: center;
+    color: white;
+  }
+  
+  .health-bar{
+    position: absolute;
+    z-index: 0;
+    top: 11px;
+    left: 35px;
+    
+    width: 250px;
+    height: 40px;
+    border: 2px solid #fff;
+    border-radius: 20px;
+    
+    padding: 7px;
+  
+    background: #f44242;
+    background: -moz-linear-gradient(-45deg,  #ffa500 47%, #ff4500 47%);
+    background: -webkit-linear-gradient(-45deg,  #ffa500 47%,#ff4500 47%);
+    background: linear-gradient(135deg,  #ffa500 47%,#ff4500 47%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffa500', endColorstr='#ff4500',GradientType=1 );  
+  }
+  
+  .percentage{
+    width: 99%;
+    margin: 0 auto;
+    background: olive;
+    
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+    border-radius: 15px;
+  }
+
+
+
+
+
+
+#title-container {
+    display: block;
+}
+
+#main-title__pikachu {
+    right: 0;
+    top: -20%;
+    font-size: 100px;
+    color: #f6bd20;
+    z-index: 7;
+
+}
+
+#main-title__strikes {
+    right: 0;
+    top: -5%;
+    font-size: 120px;
+    color: #c52018;
+    z-index: 8;
+    
+
+
+}
+
+#main-title__back {
+    right: -8%;
+    top: 20%;
+    font-size: 120px;
+    color: #c52018;
+    z-index: 7;
+
+}
+
+#special-border{
+    border-radius: 50%;
+    display: none;
+
+  
+}
+
+#btn-play {
+    position: absolute;
+    top: 60%;
+    left: 5%;
+    width: 250px;
+    height: 70px;
+    z-index: 3;
+    display: none;
+    font-size: 50px;
+    border-radius: 5%;
+    -webkit-animation: scale-up-center 0.4s cubic-bezier(0.9, 0.93, 0.96, 1.000) infinite alternate-reverse both;
+    animation: scale-up-center 0.4s cubic-bezier(0.9, 0.93, 0.96, 1.000) infinite alternate-reverse both;
+    
+}
+
+#btn-play:hover {
+    -webkit-animation: scale-up-center 0.2s cubic-bezier(0.9, 0.93, 0.96, 1.000) infinite alternate-reverse both;
+    animation: scale-up-center 0.2s cubic-bezier(0.9, 0.93, 0.96, 1.000) infinite alternate-reverse both;
+}
+
+#btn-again {
+    position: absolute;
+    top: 80%;
+    left: 0;
+    width: 290px;
+    height: 120px;
+    z-index: 3;
+    display: none;
+    font-size: 40px;
+    border-radius: 5%;
+    -webkit-animation: scale-up-center 1s cubic-bezier(0.9, 0.93, 0.96, 1.000) infinite alternate-reverse both;
+    animation: scale-up-center 1s cubic-bezier(0.9, 0.93, 0.96, 1.000) infinite alternate-reverse both;
+
+}
+
+#btn-again:hover {
+    -webkit-animation: scale-up-center 0.4s cubic-bezier(0.9, 0.93, 0.96, 1.000) infinite alternate-reverse both;
+    animation: scale-up-center 0.4s cubic-bezier(0.9, 0.93, 0.96, 1.000) infinite alternate-reverse both;
+}
+
+#btn-return{
+    position: absolute;
+    bottom: 1%;
+    right: 0;
+    width: 100px;
+    height: 70px;
+    z-index: 3;
+    display: none;
+    font-size: 20px;
+    border-radius: 5%;
+    
+}
+
+#btn-return:hover {
+    -webkit-animation: scale-up-center 0.4s cubic-bezier(0.9, 0.93, 0.96, 1.000) infinite alternate-reverse both;
+    animation: scale-up-center 0.4s cubic-bezier(0.9, 0.93, 0.96, 1.000) infinite alternate-reverse both;
+}
+
+#btn-ingame-quit {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    right: 1%;
+    top: 1%;
+    background-image: url('./assets/img/exitbutton.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    z-index: 3;
+    display: none;
+
+
+}
+
+#screen-msg {
+    display: none;
+}
+
+#screen-game {
+    display: none;
+    z-index: 2;
+    height: 100vh;
+    top: 0;
+
+}
+
+#screen-game__shadow {
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    height: 110vh;
+    background-color: #000;
+    opacity: 0.8;
+    z-index: 3;
+    display: block;
+
+}
+
+#painel {
+    width: 99vw;
+    height: 99vh;
+    background-image: url('assets/img/gamebg.gif');
+    background-repeat: no-repeat;
+    background-size: 100vw 100vh;
+    box-shadow: 1px 1px 10px 20px #000000;
+
+
+}
+
+
+#ash-hud {
+    
+}
+
+#ash-lifebar {
+
+}
+
+#pikachu {
+    width: 100px;
+    height: 100px;
+    bottom: 0;
+    position: absolute;
+    background-image: url("./assets/img/pikachuback.gif");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 2;
+
+}
+
+
 
 
