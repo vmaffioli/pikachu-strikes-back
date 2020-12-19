@@ -8,6 +8,7 @@ var totalEnemies;
 var ashLifePoints, ashLifeBar, ashEnergyBar;
 var ie, x, y, z;
 var screenMsg, screenGame, screenGame__shadow;
+var titlesMainParam, titlesGameoverParam;
 
 
 function keyDw() {
@@ -287,40 +288,36 @@ function toMenu() {
         document.getElementById("btn-return").style.display = "none";
         document.getElementById("btn-return").style.display = "none";
         element.document.getElementById("title-container").style.display = "block";
-
-
-
+        titleControl("main");
 
     } else {
-
-    screenMsg.style.backgroundImage = "url('assets/img/front.gif')";
-    z = document.createAttribute("id");
-    z.value = "special-border";
-    screenMsg.setAttributeNode(z);
- 
-    document.getElementById("btn-return").style.display = "none";
-    document.getElementById("btn-replay").style.display = "none";
-    document.getElementById("btn-play").style.display = "block";
-
-
+        screenMsg.style.backgroundImage = "url('assets/img/front.gif')";
+        z = document.createAttribute("id");
+        z.value = "special-border";
+        screenMsg.setAttributeNode(z);
+        document.getElementById("btn-return").style.display = "none";
+        document.getElementById("btn-again").style.display = "none";
+        document.getElementById("btn-play").style.display = "block";
+        titleControl("main");
 
     }
 }
 
 function restart() {
 
+    clearInterval(createTimeEnemy);
+    cancelAnimationFrame(frames);
     totalEnemies = document.getElementsByClassName("enemy");
     var size = totalEnemies.length;
 
-    for (var i = 0; i < size; i++) {
+    for (var i = 0; i <= size; i++) {
         if (totalEnemies[i]) {
             totalEnemies[i].remove();
         }
     }
 
     screenMsg.style.display = "none";
-    clearInterval(createTimeEnemy);
-    cancelAnimationFrame(frames);
+
 
     ashLifePoints = 300;
     dirxP = diryP = 0;
@@ -329,6 +326,7 @@ function restart() {
     player.style.left = pospy + "px";
     player.style.left = pospx + "px";
     countEnemy = 150;
+     
     game = true;
     createTimeEnemy = setInterval(createEnemy, 1700);
     screenGame.style.display = "block";
@@ -386,7 +384,7 @@ function init() {
     screenGame = document.getElementById("screen-game");
     screenMsg = document.getElementById("screen-msg");
     screenGame__shadow = document.getElementById("screen-game__shadow");
-    z
+
 
 
     // ini player
@@ -418,68 +416,67 @@ function init() {
     // views
     game = false;
     screenGame__shadow.style.opacity = "0.8";
+
+    titlesMainParam = [
+        ["main-title__top", "Pikachu", "#f6bd20", "-20%", "0", "100px"],
+        ["main-title__middle", "Strikes", "#c52018", "-5%", "0", "120px"],
+        ["main-title__bottom", "Back!!!", "#c52018", "20%", "-8%", "120px"] ];
+    titlesGameoverParam = [
+        ["main-title__top", "GAME OVER!!!", "#c52018", "-20%", "18%", "100px"],
+        ["main-title__middle", "Your Score:", "#f6bd20", "15%", "18%", "90px"],
+        ["main-title__bottom", "12385", "#f6bd20", "35%", "18%", "90px"] ];
+
+    titleControl("main");
+
+    
     z = document.createAttribute("id");
     z.value = "special-border";
     screenMsg.setAttributeNode(z);
+
     screenMsg.style.backgroundImage = "url('assets/img/front.gif')";
+
     document.getElementById("btn-play").innerHTML = "Play!";
     document.getElementById("btn-play").addEventListener("click", restart);
     document.getElementById("btn-ingame-quit").addEventListener("click", toMenu);
+
+
+
     screenGame.style.display = "none";
     screenMsg.style.display = "block";
     document.getElementById("btn-play").style.display = "block";
     screenGame.style.display = "none";
     screenMsg.style.display = "block";
     document.getElementById(z.value).style.display = "block";
-    titleControl("main");
+
+
+
+
 
 }
+
 
 function titleControl(type) {
-    if (type === "main"){
-        document.getElementById("main-title__top").innerHTML = "Pikachu";
-        document.getElementById("main-title__middle").innerHTML = "Strikes";
-        document.getElementById("main-title__bottom").innerHTML = "Back!!!";
+    if (type === "main") {
+        for (var i = 0; i <= 2; i++) {
+            document.getElementById(titlesMainParam[i][0]).innerHTML = titlesMainParam[i][1];
+            document.getElementById(titlesMainParam[i][0]).style.color = titlesMainParam[i][2];
+            document.getElementById(titlesMainParam[i][0]).style.top = titlesMainParam[i][3];
+            document.getElementById(titlesMainParam[i][0]).style.right = titlesMainParam[i][4];
+            document.getElementById(titlesMainParam[i][0]).style.fontSize = titlesMainParam[i][5];
 
-    } else if (type === "gameover"){
-        document.getElementById("main-title__top").innerHTML = "GAME OVER!!!";
-        document.getElementById("main-title__top").style.color = "#c52018";
-        document.getElementById("main-title__top").style.fontSize = "120px";
-        document.getElementById("main-title__top").style.right = "18%";
+        };
 
-
-
-
-        document.getElementById("main-title__middle").innerHTML = "Your Score:";
-        document.getElementById("main-title__middle").style.color = "#f6bd20";
-        document.getElementById("main-title__middle").style.right = "18%";
-        document.getElementById("main-title__middle").style.top = "15%";
-        document.getElementById("main-title__middle").style.fontSize = "90px";
-
-
-        document.getElementById("main-title__bottom").innerHTML = "12385";
-        document.getElementById("main-title__bottom").style.color = "#f6bd20";
-        document.getElementById("main-title__bottom").style.right = "18%";
-        document.getElementById("main-title__bottom").style.top = "35%";
-        document.getElementById("main-title__bottom").style.fontSize = "90px";
-
-
-
-
+    } else if (type === "gameover") {
+        for (var i = 0; i <= 2; i++) {
+            document.getElementById(titlesGameoverParam[i][0]).innerHTML = titlesGameoverParam[i][1];
+            document.getElementById(titlesGameoverParam[i][0]).style.color = titlesGameoverParam[i][2];
+            document.getElementById(titlesGameoverParam[i][0]).style.top = titlesGameoverParam[i][3];
+            document.getElementById(titlesGameoverParam[i][0]).style.right = titlesGameoverParam[i][4];
+            document.getElementById(titlesGameoverParam[i][0]).style.fontSize = titlesGameoverParam[i][5];
+        };
     }
 
 }
-
-function mouseOverBtn(type) {
-    if (type == 1) {
-        screenMsg.style.backgroundImage = "url('./assets/img/gameover-try-confirm.png')";
-
-    }
-
-}
-
-
-
 
 
 window.addEventListener("load", init);

@@ -233,30 +233,17 @@ body{
 }
 
 #main-title__top {
-    right: 0;
-    top: -20%;
-    font-size: 100px;
-    color: #f6bd20;
+
     z-index: 7;
 
 }
 
 #main-title__middle {
-    right: 0;
-    top: -5%;
-    font-size: 120px;
-    color: #c52018;
     z-index: 8;
     
-
-
 }
 
 #main-title__bottom {
-    right: -8%;
-    top: 20%;
-    font-size: 120px;
-    color: #c52018;
     z-index: 7;
 
 }
