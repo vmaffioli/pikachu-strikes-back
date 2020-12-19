@@ -5,7 +5,7 @@ var game;
 var frames;
 var countEnemy, painelcountEnemy, speedE, createTimeEnemy, damageEnemy;
 var totalEnemies;
-var ashLifePoints, ashLifeBar;
+var ashLifePoints, ashLifeBar, ashEnergyBar;
 var ie, x, y, z;
 var screenMsg, screenGame, screenGame__shadow;
 
@@ -252,7 +252,7 @@ function gameManager() {
         z = document.createAttribute("id");
         z.value = "btn_play";
         screenMsg.setAttributeNode(z);
-        screenMsg.style.backgroundImage = "url('assets/img/gameover.png')";
+        screenMsg.style.backgroundImage = "";
         document.getElementById("btn-again").innerHTML = "Play Again?";
         document.getElementById("btn-again").addEventListener("click", restart);
         screenGame.style.display = "none";
@@ -267,6 +267,8 @@ function gameManager() {
         screenGame.style.display = "none";
         screenMsg.style.display = "block";
         document.getElementById(z.value).style.display = "block";
+
+        titleControl("gameover");
 
 
     }
@@ -284,12 +286,7 @@ function toMenu() {
         document.getElementById("btn-ingame-quit").style.display = "none";
         document.getElementById("btn-return").style.display = "none";
         document.getElementById("btn-return").style.display = "none";
-        var titlelistParam = ["main-title__pikachu", "main-title__strikes", "main-title__back"];
-        z = 0;
-        titlelistParam.forEach(element => {
-            element.document.getElementById(titlelistParam[z]).style.display = "block";
-            z++;
-        });
+        element.document.getElementById("title-container").style.display = "block";
 
 
 
@@ -304,6 +301,8 @@ function toMenu() {
     document.getElementById("btn-return").style.display = "none";
     document.getElementById("btn-replay").style.display = "none";
     document.getElementById("btn-play").style.display = "block";
+
+
 
     }
 }
@@ -336,7 +335,6 @@ function restart() {
     screenGame__shadow.style.opacity = "0";
     document.getElementById("btn-return").style.display = "none";
     document.getElementById("btn-ingame-quit").style.display = "block";
-    document.getElementById("title-container").style.display = "none";
 
 
 
@@ -388,6 +386,7 @@ function init() {
     screenGame = document.getElementById("screen-game");
     screenMsg = document.getElementById("screen-msg");
     screenGame__shadow = document.getElementById("screen-game__shadow");
+    z
 
 
     // ini player
@@ -409,6 +408,9 @@ function init() {
     ashLifePoints = 300;
     ashLifeBar = document.getElementById("ash-lifebar");
     ashLifeBar.style.width = ashLifePoints + "px";
+    ashEnergyBar = document.getElementById("ash-energybar");
+    ashEnergyBar.style.width = ashLifePoints + "px";
+
 
     // explosions and sounds
     ie = isound = 0;
@@ -429,8 +431,42 @@ function init() {
     screenGame.style.display = "none";
     screenMsg.style.display = "block";
     document.getElementById(z.value).style.display = "block";
+    titleControl("main");
+
+}
+
+function titleControl(type) {
+    if (type === "main"){
+        document.getElementById("main-title__top").innerHTML = "Pikachu";
+        document.getElementById("main-title__middle").innerHTML = "Strikes";
+        document.getElementById("main-title__bottom").innerHTML = "Back!!!";
+
+    } else if (type === "gameover"){
+        document.getElementById("main-title__top").innerHTML = "GAME OVER!!!";
+        document.getElementById("main-title__top").style.color = "#c52018";
+        document.getElementById("main-title__top").style.fontSize = "120px";
+        document.getElementById("main-title__top").style.right = "18%";
 
 
+
+
+        document.getElementById("main-title__middle").innerHTML = "Your Score:";
+        document.getElementById("main-title__middle").style.color = "#f6bd20";
+        document.getElementById("main-title__middle").style.right = "18%";
+        document.getElementById("main-title__middle").style.top = "15%";
+        document.getElementById("main-title__middle").style.fontSize = "90px";
+
+
+        document.getElementById("main-title__bottom").innerHTML = "12385";
+        document.getElementById("main-title__bottom").style.color = "#f6bd20";
+        document.getElementById("main-title__bottom").style.right = "18%";
+        document.getElementById("main-title__bottom").style.top = "35%";
+        document.getElementById("main-title__bottom").style.fontSize = "90px";
+
+
+
+
+    }
 
 }
 

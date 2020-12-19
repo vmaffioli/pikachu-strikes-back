@@ -177,8 +177,9 @@ body{
     
 }
 
-.chart-wrapper{
+.hud{
     position: relative;
+    z-index: 4;
   }
   
   .pulse{
@@ -188,46 +189,39 @@ body{
   .icon-wrapper{
     position: absolute;
     z-index: 1;
-    width: 60px;
+    width: 70px;
     height: 60px;
-    background: orange;  
+    left: 1%;
     padding-top: 13px;
-    border: 2px solid #fff;
+    border: 2px solid #000;
     border-radius: 50%; 
     text-align: center;
     color: white;
+    background-image: url("./assets/img/seriouspikachu.png");
+    background-size: cover;
+    background-position: center;
   }
   
   .health-bar{
     position: absolute;
     z-index: 0;
     top: 11px;
-    left: 35px;
+    left: 5.5%;
     
-    width: 250px;
+    width: 310px;
     height: 40px;
-    border: 2px solid #fff;
-    border-radius: 20px;
+    border: 2px solid #000;
+    border-radius: 0 20px 20px 0; 
     
-    padding: 7px;
+    padding: 2px;
   
     background: #f44242;
-    background: -moz-linear-gradient(-45deg,  #ffa500 47%, #ff4500 47%);
-    background: -webkit-linear-gradient(-45deg,  #ffa500 47%,#ff4500 47%);
-    background: linear-gradient(135deg,  #ffa500 47%,#ff4500 47%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffa500', endColorstr='#ff4500',GradientType=1 );  
+    background: -moz-linear-gradient(-45deg,  #fff 47%, #ff4500 47%);
+    background: -webkit-linear-gradient(-45deg,  #fff 47%,#ff4500 47%);
+    background: linear-gradient(135deg,  #fff 47%,#ff4500 47%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff', endColorstr='#ff4500',GradientType=1 );  
   }
   
-  .percentage{
-    width: 99%;
-    margin: 0 auto;
-    background: olive;
-    
-    color: #fff;
-    font-weight: 700;
-    text-align: center;
-    border-radius: 15px;
-  }
 
 
 
@@ -238,7 +232,7 @@ body{
     display: block;
 }
 
-#main-title__pikachu {
+#main-title__top {
     right: 0;
     top: -20%;
     font-size: 100px;
@@ -247,7 +241,7 @@ body{
 
 }
 
-#main-title__strikes {
+#main-title__middle {
     right: 0;
     top: -5%;
     font-size: 120px;
@@ -258,7 +252,7 @@ body{
 
 }
 
-#main-title__back {
+#main-title__bottom {
     right: -8%;
     top: 20%;
     font-size: 120px;
@@ -283,7 +277,7 @@ body{
     z-index: 3;
     display: none;
     font-size: 50px;
-    border-radius: 5%;
+    border-radius: 10%;
     -webkit-animation: scale-up-center 0.4s cubic-bezier(0.9, 0.93, 0.96, 1.000) infinite alternate-reverse both;
     animation: scale-up-center 0.4s cubic-bezier(0.9, 0.93, 0.96, 1.000) infinite alternate-reverse both;
     
@@ -337,7 +331,7 @@ body{
     width: 50px;
     height: 50px;
     right: 1%;
-    top: 1%;
+    top: 3%;
     background-image: url('./assets/img/exitbutton.png');
     background-size: cover;
     background-position: center;
@@ -375,7 +369,7 @@ body{
 #painel {
     width: 99vw;
     height: 99vh;
-    background-image: url('assets/img/gamebg.gif');
+    background-image: url('assets/img/gamebg.png');
     background-repeat: no-repeat;
     background-size: 100vw 100vh;
     box-shadow: 1px 1px 10px 20px #000000;
@@ -384,25 +378,56 @@ body{
 }
 
 
-#ash-hud {
-    
-}
-
 #ash-lifebar {
+  position: absolute;
+  margin: 5px 0px 0px 0px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  height: 5px;
+  border-style: solid;
+  border-color: #000;
+  border-width: 0.5px;
 
+  background: rgb(14, 255, 1);
+  
+  color: #fff;
+  justify-content: center;
+  font-weight: 300;
+  text-align: center;
+  border-radius: 0 15px 15px 0;
 }
+
+#ash-energybar {
+  position: absolute;
+  margin: 27px 0px 0px 0px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  height: 1px;
+  border-style: solid;
+  border-color: #000;
+  border-width: 0.5px;
+
+
+  background: rgb(1, 187, 255);
+  
+  color: #fff;
+  justify-content: center;
+  font-weight: 300;
+  text-align: center;
+  border-radius: 0 15px 15px 0;
+}
+
 
 #pikachu {
+    position: absolute;
     width: 100px;
     height: 100px;
-    bottom: 0;
-    position: absolute;
     background-image: url("./assets/img/pikachuback.gif");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     z-index: 2;
-
+    margin-top: 4%;
 }
 
 
