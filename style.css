@@ -106,9 +106,10 @@ body{
 
 .enemy {
     width: 100px;
-    height: 100px;
+    height: 70px;
     background-image: url("./assets/img/badspearow.gif");
-    background-clip: content-box;
+    background-size: cover;
+
     position: absolute;
     z-index: 1;
     
@@ -128,6 +129,12 @@ body{
     height: 100px;
     position: absolute;
     
+}
+
+.pikachu-hit {
+  width: 100px;
+  height: 100px;
+  position: absolute;
 }
 
 .ash-damage {

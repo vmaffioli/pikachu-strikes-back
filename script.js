@@ -6,9 +6,10 @@ var frames;
 var countEnemy, painelcountEnemy, speedE, createTimeEnemy, damageEnemy;
 var totalEnemies;
 var ashLifePoints, ashLifeBar, ashEnergyBar;
-var ie, x, y, z;
+var ie, x, y, z, idir;
 var screenMsg, screenGame, screenGame__shadow;
 var titlesMainParam, titlesGameoverParam;
+
 
 
 function keyDw() {
@@ -59,10 +60,7 @@ function createEnemy() {
         enemy.setAttributeNode(att1);
         enemy.setAttributeNode(att2);
 
-        x = Math.random() * 999;
-        if (x >= 450) {
-            enemy.style.transform = "scaleX(-1)";
-        }
+
 
         document.body.appendChild(enemy);
         countEnemy--;
@@ -78,23 +76,69 @@ function enemyControl() {
     for (var i = 0; i < size; i++) {
         if (totalEnemies[i]) {
             var y = totalEnemies[i].offsetTop;
-            y += speedE;
-            totalEnemies[i].style.top = y + "px";
+            var x = totalEnemies[i].offsetLeft;
+
+            if (x < player.offsetLeft) {
+                totalEnemies[i].style.transform = "scaleX(-1)";
+            } else if (x > player.offsetLeft) {
+                totalEnemies[i].style.transform = "scaleX(1)";
+            }
+
+
+
+            if (y > screenSzH / 3) {
+                if (x < player.offsetLeft - 20) {
+                    y += speedE;
+                    x += speedE;
+                    totalEnemies[i].style.left = x + "px";
+                    totalEnemies[i].style.top = y + "px";
+                } else if (x > player.offsetLeft + 20 ) {
+                    y += speedE;
+                    x -= speedE;
+                    totalEnemies[i].style.left = x + "px";
+                    totalEnemies[i].style.top = y + "px";
+                } else {
+                    document.getElementById("audio3").play();
+                    y += speedE + 5;
+                    totalEnemies[i].style.top = y + "px";
+                }
+            } else {
+                y += speedE;
+                totalEnemies[i].style.top = y + "px";
+            }
 
             if (y > screenSzH) {
-                ashLifePoints -= damageEnemy;
+                //ashLifePoints -= damageEnemy;
                 totalEnemies[i].remove();
                 //totalEnemies[i].style.left = y + "px";
 
-                document.getElementById("audio3").play();
+            } else {
+                if (
+                    (
+                        (player.offsetTop <= (totalEnemies[i].offsetTop + 20)) && // cima tiro com baixo bomba
+                        ((player.offsetTop + 80) >= (totalEnemies[i].offsetTop))   // baixo tiro com cima bomba
+                    )
+                    &&
+                    (
+                        (player.offsetLeft <= (totalEnemies[i].offsetLeft + 20)) && //esquerda tiro com direita bomba
+                        ((player.offsetLeft + 20) >= (totalEnemies[i].offsetLeft)) //direita tiro com esquerda bomba
+                    )
+                ) {
+                    createDamageView(2, player.offsetLeft - 80, player.offsetTop -280);
+
+                    totalEnemies[i].remove();
+                    ashLifePoints -= 100;
 
 
+                }
             }
+
 
         }
     }
-
 }
+
+
 
 function shot(x, y) {
 
@@ -167,7 +211,7 @@ function collisionShotEnemy(shot) {
 
 }
 
-function createDamageView(type, x, y) { // 1 explosion      2 ash-damage
+function createDamageView(t, x, y) { // 1 explosion      2 ash-damage
     if (document.getElementById("damage" + (ie - 1))) {
         document.getElementById("damage" + (ie - 1)).remove();
     }
@@ -180,14 +224,14 @@ function createDamageView(type, x, y) { // 1 explosion      2 ash-damage
     // img attr 
     var att3 = document.createAttribute("src");
 
-    if (type == 1) {
+    if (t === 1) {
         att1.value = "enemy-explosion";
         att2.value = "top:" + y + "px; left:" + x + "px;";
         att3.value = "./assets/img/explosion2.gif?" + new Date();
-    } else {
-        att1.value = "ash-damage";
-        att2.value = "top:" + (screenSzH - 100) + "px;left:" + (x - 100) + "px;";
-        att3.value = "./assets/img/Effect.gif?" + new Date();
+    } else if (t === 2) {
+        att1.value = "pikachu-hit";
+        att2.value = "top:" + y + "px; left:" + x + "px;";
+        att3.value = "./assets/img/hitpikachublood.gif?" + new Date();
     }
 
     explosion.setAttributeNode(att1);
@@ -323,10 +367,12 @@ function restart() {
     dirxP = diryP = 0;
     pospy = screenSzH / 2;
     pospx = screenSzW / 2;
-    player.style.left = pospy + "px";
+    player.style.bottom = pospy + "px";
     player.style.left = pospx + "px";
     countEnemy = 150;
-     
+    speedE = 3;
+    screenSzH = window.innerHeight;
+    screenSzW = window.innerWidth;
     game = true;
     createTimeEnemy = setInterval(createEnemy, 1700);
     screenGame.style.display = "block";
@@ -420,15 +466,15 @@ function init() {
     titlesMainParam = [
         ["main-title__top", "Pikachu", "#f6bd20", "-20%", "0", "100px"],
         ["main-title__middle", "Strikes", "#c52018", "-5%", "0", "120px"],
-        ["main-title__bottom", "Back!!!", "#c52018", "20%", "-8%", "120px"] ];
+        ["main-title__bottom", "Back!!!", "#c52018", "20%", "-8%", "120px"]];
     titlesGameoverParam = [
         ["main-title__top", "GAME OVER!!!", "#c52018", "-20%", "18%", "100px"],
         ["main-title__middle", "Your Score:", "#f6bd20", "15%", "18%", "90px"],
-        ["main-title__bottom", "12385", "#f6bd20", "35%", "18%", "90px"] ];
+        ["main-title__bottom", "12385", "#f6bd20", "35%", "18%", "90px"]];
 
     titleControl("main");
 
-    
+
     z = document.createAttribute("id");
     z.value = "special-border";
     screenMsg.setAttributeNode(z);
@@ -482,5 +528,4 @@ function titleControl(type) {
 window.addEventListener("load", init);
 document.addEventListener("keydown", keyDw);
 document.addEventListener("keyup", keyUp);
-
 
