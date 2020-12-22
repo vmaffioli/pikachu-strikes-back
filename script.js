@@ -9,6 +9,7 @@ var ashLifePoints, ashLifeBar, ashEnergyBar;
 var ie, x, y, z, idir;
 var screenMsg, screenGame, screenGame__shadow;
 var titlesMainParam, titlesGameoverParam;
+var shockwaveTimer = 0;
 
 
 
@@ -17,7 +18,7 @@ function keyDw() {
     if (key == 38) { //up
         diryP = - 1;
     } else if (key == 40) {//down
-        diryP = 1;
+        createShockWave();
     }
 
     if (key == 37) {//left
@@ -30,7 +31,7 @@ function keyDw() {
 
     if (key == 32) {//spacebar / shot
         //shot
-        shot(pospx + 75, pospy);
+        shot(pospx + 40, pospy + 40);
 
     }
 
@@ -68,7 +69,6 @@ function createEnemy() {
 
     }
 }
-
 function enemyControl() {
     totalEnemies = document.getElementsByClassName("enemy");
     var size = totalEnemies.length;
@@ -77,6 +77,8 @@ function enemyControl() {
         if (totalEnemies[i]) {
             var y = totalEnemies[i].offsetTop;
             var x = totalEnemies[i].offsetLeft;
+
+
 
             if (x < player.offsetLeft) {
                 totalEnemies[i].style.transform = "scaleX(-1)";
@@ -92,13 +94,12 @@ function enemyControl() {
                     x += speedE;
                     totalEnemies[i].style.left = x + "px";
                     totalEnemies[i].style.top = y + "px";
-                } else if (x > player.offsetLeft + 20 ) {
+                } else if (x > player.offsetLeft + 20) {
                     y += speedE;
                     x -= speedE;
                     totalEnemies[i].style.left = x + "px";
                     totalEnemies[i].style.top = y + "px";
                 } else {
-                    document.getElementById("audio3").play();
                     y += speedE + 5;
                     totalEnemies[i].style.top = y + "px";
                 }
@@ -114,7 +115,7 @@ function enemyControl() {
 
             } else {
                 if (
-                    (
+                    ( // damage contact
                         (player.offsetTop <= (totalEnemies[i].offsetTop + 20)) && // cima tiro com baixo bomba
                         ((player.offsetTop + 80) >= (totalEnemies[i].offsetTop))   // baixo tiro com cima bomba
                     )
@@ -124,10 +125,11 @@ function enemyControl() {
                         ((player.offsetLeft + 20) >= (totalEnemies[i].offsetLeft)) //direita tiro com esquerda bomba
                     )
                 ) {
-                    createDamageView(2, player.offsetLeft - 80, player.offsetTop -280);
-
+                    createDamageView(2, player.offsetLeft - 140, player.offsetTop - 150);
                     totalEnemies[i].remove();
                     ashLifePoints -= 100;
+                    document.getElementById("audio3").play();
+
 
 
                 }
@@ -138,9 +140,89 @@ function enemyControl() {
     }
 }
 
+function createShockWave() {
+
+    var sw = document.createElement("pikachu");
+    var image = document.createElement("img");
+    var att1 = document.createAttribute("id");
+    var att2 = document.createAttribute("style");
+    var att3 = document.createAttribute("src");
+    var att4 = document.createAttribute("style");
+    var shockpy = player.offsetTop - 100;
+    var shockpx = player.offsetLeft - 110;
+    var pikachuVoices = Math.random() * 999;
+
+    document.getElementById("audio5").play();
+
+    if (pikachuVoices <= 333) {
+        document.getElementById("audio0").play();
+    } else if ((pikachuVoices >= 334) && (pikachuVoices <= 666)) {
+        document.getElementById("audio1").play();
+    } else if ((pikachuVoices >= 667) && (pikachuVoices <= 999)) {
+        document.getElementById("audio2").play();
+    };
+
+    att1.value = "player-shockwave";
+    att2.value = "top:" + shockpy + "px; left:" + shockpx
+        + "px;";
+    att3.value = "./assets/img/shockwave.gif?" + new Date();
+    att4.value = "  height: 300px; width: 300px; border-radius = 50%;";
+
+    sw.setAttributeNode(att1);
+    sw.setAttributeNode(att2);
+    image.setAttributeNode(att3);
+    image.setAttributeNode(att4);
+    sw.appendChild(image);
+    document.body.appendChild(sw);
+    setTimeout(function () { sw.remove(); }, 1200);
 
 
-function shot(x, y) {
+}
+
+function shockwaveControl() {
+    var wave = document.getElementById("player-shockwave");
+
+    if (wave) {
+
+        collisionShockwaveEnemy(wave);
+        speedP = 0;
+
+
+    } else {
+        speedP = 20;
+    }
+
+}
+
+
+
+function collisionShockwaveEnemy(wave) {
+    var size = totalEnemies.length;
+
+    for (var i = 0; i < size; i++) {
+        if (totalEnemies[i]) {
+            if (
+                (
+                    ((player.offsetTop - 100) <= (totalEnemies[i].offsetTop + 44)) && // cima shockwave com baixo enemy
+                    ((player.offsetTop + 57) >= (totalEnemies[i].offsetTop))   // baixo shockwave com cima enemy
+                )
+                &&
+                (
+                    ((player.offsetLeft - 100) <= (totalEnemies[i].offsetLeft + 44)) && //esquerda shockwave com direita enemy
+                    ((player.offsetLeft + 57) >= (totalEnemies[i].offsetLeft)) //direita shockwave com esquerda enemy
+                )
+            ) {
+                createDamageView(1, totalEnemies[i].offsetLeft - 50, totalEnemies[i].offsetTop - 80);
+                totalEnemies[i].remove();
+
+            }
+        }
+    }
+
+}
+
+
+function shot(posx, posy) {
 
     var s = document.createElement("div");
     var att1 = document.createAttribute("class");
@@ -156,7 +238,7 @@ function shot(x, y) {
     };
 
     att1.value = "player-shot";
-    att2.value = "top:" + y + "px; left:" + x + "px";
+    att2.value = "top:" + posy + "px; left:" + posx + "px";
 
     s.setAttributeNode(att1);
     s.setAttributeNode(att2);
@@ -180,10 +262,12 @@ function shotControl() {
                 //shots[i].remove();
                 document.body.removeChild(shots[i]);
 
+
             }
         }
     }
 }
+
 
 function collisionShotEnemy(shot) {
     var size = totalEnemies.length;
@@ -192,13 +276,13 @@ function collisionShotEnemy(shot) {
         if (totalEnemies[i]) {
             if (
                 (
-                    (shot.offsetTop <= (totalEnemies[i].offsetTop + 50)) && // cima tiro com baixo bomba
-                    ((shot.offsetTop + 50) >= (totalEnemies[i].offsetTop))   // baixo tiro com cima bomba
+                    (shot.offsetTop <= (totalEnemies[i].offsetTop + 44)) && // cima tiro com baixo bomba
+                    ((shot.offsetTop + 75) >= (totalEnemies[i].offsetTop))   // baixo tiro com cima bomba
                 )
                 &&
                 (
-                    (shot.offsetLeft <= (totalEnemies[i].offsetLeft + 80)) && //esquerda tiro com direita bomba
-                    ((shot.offsetLeft + 20) >= (totalEnemies[i].offsetLeft)) //direita tiro com esquerda bomba
+                    (shot.offsetLeft <= (totalEnemies[i].offsetLeft + 57)) && //esquerda tiro com direita bomba
+                    ((shot.offsetLeft + 19) >= (totalEnemies[i].offsetLeft)) //direita tiro com esquerda bomba
                 )
             ) {
                 createDamageView(1, totalEnemies[i].offsetLeft - 50, totalEnemies[i].offsetTop - 80);
@@ -211,36 +295,49 @@ function collisionShotEnemy(shot) {
 
 }
 
-function createDamageView(t, x, y) { // 1 explosion      2 ash-damage
-    if (document.getElementById("damage" + (ie - 1))) {
-        document.getElementById("damage" + (ie - 1)).remove();
-    }
-    var explosion = document.createElement("div");
+function createDamageView(t, x, y) { // 1 explosion      2 pikachu-damage
+
+    var damage = document.createElement("div");
     var image = document.createElement("img");
+    var random = Math.random();
 
     //div attr
+    var att0 = document.createAttribute("id");
     var att1 = document.createAttribute("class");
     var att2 = document.createAttribute("style");
     // img attr 
     var att3 = document.createAttribute("src");
 
+
     if (t === 1) {
+        att0.value = "explosion" + random;
         att1.value = "enemy-explosion";
         att2.value = "top:" + y + "px; left:" + x + "px;";
-        att3.value = "./assets/img/explosion2.gif?" + new Date();
+        att3.value = "./assets/img/explosion.gif?" + new Date();
+        document.getElementById("audio5").play();
     } else if (t === 2) {
+        att0.value = "hit" + random;
         att1.value = "pikachu-hit";
         att2.value = "top:" + y + "px; left:" + x + "px;";
         att3.value = "./assets/img/hitpikachublood.gif?" + new Date();
+        document.getElementById("audio7").play();
+
+
     }
 
-    explosion.setAttributeNode(att1);
-    explosion.setAttributeNode(att2);
+    damage.setAttributeNode(att0);
+    damage.setAttributeNode(att1);
+    damage.setAttributeNode(att2);
     image.setAttributeNode(att3);
-    explosion.appendChild(image);
-    document.body.appendChild(explosion);
-    document.getElementById("audio5").play();
+    damage.appendChild(image);
+    document.body.appendChild(damage);
     ie++;
+    setTimeout(
+        function () {
+            document.getElementById(att0.value).remove();
+        }
+        , 1500);
+
 
 }
 
@@ -268,6 +365,7 @@ function gameLoop() {
         // control functions
         playerControl();
         shotControl();
+        shockwaveControl();
         enemyControl();
         gameManager();
 
@@ -277,16 +375,39 @@ function gameLoop() {
 
 }
 
+function createEnemyShooter() {
+    if (game) {
+        y = 0;
+        x = Math.random() * screenSzW;
+        var enemy = document.createElement("div");
+        var att1 = document.createAttribute("class");
+        var att2 = document.createAttribute("style");
+
+        att1.value = "enemy";
+        att2.value = "bottom:" + y + "px; left:" + player.offsetLeft + "px;";
+        enemy.setAttributeNode(att1);
+        enemy.setAttributeNode(att2);
+
+
+
+        document.body.appendChild(enemy);
+        countEnemy--;
+
+
+    }
+}
+
 function gameManager() {
     ashLifeBar.style.width = ashLifePoints + "px";
 
     if (countEnemy <= 0) {
-        game = false;
+        //game = false;
         clearInterval(createTimeEnemy);
-        screenMsg.style.backgroundImage = "url('assets/img/pikachuwelldone.gif')";
-        screenMsg.style.display = "block";
-        screenGame.style.display = "none";
-        screenGame__shadow.style.opacity = "0.8";
+
+        //screenGame__shadow.style.opacity = "0.2";
+        //screenMsg.style.display = "block";
+        //screenGame.style.display = "none";
+        screenGame__shadow.style.opacity = "0.3";
 
 
 
@@ -369,12 +490,12 @@ function restart() {
     pospx = screenSzW / 2;
     player.style.bottom = pospy + "px";
     player.style.left = pospx + "px";
-    countEnemy = 150;
+    countEnemy = 100;
     speedE = 3;
     screenSzH = window.innerHeight;
     screenSzW = window.innerWidth;
     game = true;
-    createTimeEnemy = setInterval(createEnemy, 1700);
+    createTimeEnemy = setInterval(createEnemy, 1500);
     screenGame.style.display = "block";
     screenGame__shadow.style.opacity = "0";
     document.getElementById("btn-return").style.display = "none";
@@ -400,7 +521,8 @@ function init() {
         "assets/audio/spearow.mp3", //3
         "assets/audio/fearow.mp3", //4
         "assets/audio/electricshock.mp3", //5
-        "assets/audio/battle.mp3" //6
+        "assets/audio/battle.mp3", //6
+        "assets/audio/physicalhit.mp3" //7
 
     ];
 
@@ -423,6 +545,7 @@ function init() {
 
     };
     document.body.appendChild(audio);
+
 
     //ini screen
     screenSzH = window.innerHeight;
