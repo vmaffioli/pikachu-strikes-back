@@ -17,8 +17,10 @@ function keyDw() {
     if (key == 38) { //up
         diryP = - 1;
     } else if (key == 40) {//down
-        if (!(shockwaveCooldown)){
+        if (!(shockwaveCooldown) && (pikachuEnergyPoints >= 100)){
             createShockWave();
+        } else if ((pikachuEnergyPoints < 100) || (shockwaveCooldown)) {
+            document.getElementById("audio9").play();
         }
     }
 
@@ -656,7 +658,9 @@ function init() {
         "assets/audio/electricshock.mp3", //5
         "assets/audio/battle.mp3", //6
         "assets/audio/physicalhit.mp3", //7
-        "assets/audio/thundercrack.mp3" //8
+        "assets/audio/thundercrack.mp3", //8
+        "assets/audio/noenergy.mp3" //9
+
 
 
     ];
