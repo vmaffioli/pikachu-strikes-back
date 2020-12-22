@@ -727,9 +727,9 @@ function init() {
     screenGame__shadow.style.opacity = "0.8";
 
     titlesMainParam = [
-        ["main-title__top", "Pikachu", "#f6bd20", "-20%", "0", "100px"],
-        ["main-title__middle", "Strikes", "#c52018", "-5%", "0", "120px"],
-        ["main-title__bottom", "Back!!!", "#c52018", "20%", "-8%", "120px"]];
+        ["main-title__top", "Pikachu", "#f6bd20", "-20%", "1vw", "100px"],
+        ["main-title__middle", "Strikes", "#c52018", "-5%", "1vw", "120px"],
+        ["main-title__bottom", "Back!!!", "#c52018", "20%", "-8vw", "120px"]];
     titlesGameoverParam = [
         ["main-title__top", "GAME OVER!!!", "#c52018", "-20%", "18%", "100px"],
         ["main-title__middle", "Your Score:", "#f6bd20", "15%", "18%", "90px"],

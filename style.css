@@ -369,7 +369,7 @@ body{
 #screen-game {
     display: none;
     z-index: 2;
-    height: 100vh;
+    height: 101vh;
     top: 0;
 
 }
@@ -391,7 +391,7 @@ body{
     height: 99vh;
     background-image: url('assets/img/gamebg.png');
     background-repeat: no-repeat;
-    background-size: 100vw 100vh;
+    background-size: 101vw 101vh;
     box-shadow: 1px 1px 10px 20px #000000;
 
 
