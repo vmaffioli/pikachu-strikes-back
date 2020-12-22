@@ -1,15 +1,14 @@
-var diryP, dirxP, player, speedP, pospx, pospy;
-var speedS;
+var diryP, dirxP, player, pospx, pospy;
+var speedS, speedE, speedP;
 var screenSzW, screenSzH;
 var game;
 var frames;
-var countEnemy, painelcountEnemy, speedE, createTimeEnemy, damageEnemy;
-var totalEnemies;
-var ashLifePoints, ashLifeBar, ashEnergyBar;
+var countEnemy, painelcountEnemy, createTimeEnemy, damageEnemy, createEnemyInterval, totalEnemies;
+var pikachuLifePoints, pikachuLifeBar, pikachuEnergyPoints, pikachuEnergyBar, pikachuEnergyRegen;
 var ie, x, y, z, idir;
 var screenMsg, screenGame, screenGame__shadow;
 var titlesMainParam, titlesGameoverParam;
-var shockwaveTimer = 0;
+var shockwaveCooldown;
 
 
 
@@ -18,7 +17,9 @@ function keyDw() {
     if (key == 38) { //up
         diryP = - 1;
     } else if (key == 40) {//down
-        createShockWave();
+        if (!(shockwaveCooldown)){
+            createShockWave();
+        }
     }
 
     if (key == 37) {//left
@@ -48,8 +49,101 @@ function keyUp() {
 
 }
 
+function createBoss() {
+    if (game) {        
+        y = 0;
+        x = Math.random() * screenSzW;
+        var enemy = document.createElement("div");
+        var att1 = document.createAttribute("id");
+        var att2 = document.createAttribute("style");
+
+        att1.value = "boss";
+        att2.value = "top:" + y + "px; left: 50%;";
+        enemy.setAttributeNode(att1);
+        enemy.setAttributeNode(att2);
+
+        document.body.appendChild(enemy);
+        countEnemy--;
+
+    }
+}
+
+function bossControl() {
+    totalBoss = document.getElementsByClassName("enemy");
+    var size = totalBoss.length;
+
+    for (var i = 0; i < size; i++) {
+        if (totalBoss[i]) {
+            var y = totalBoss[i].offsetTop;
+            var x = totalBoss[i].offsetLeft;
+            
+            var random = Math.floor(Math.random()*8);
+            if (random < 2){random = 3};
+
+
+
+            if (x < player.offsetLeft) {
+                totalBoss[i].style.transform = "scaleX(-1)";
+            } else if (x > player.offsetLeft) {
+                totalBoss[i].style.transform = "scaleX(1)";
+            }
+
+            console.log(random);
+            if (y > screenSzH / random) {
+                if (x < player.offsetLeft - 20) {
+                    y += speedE;
+                    x += speedE;
+                    totalBoss[i].style.left = x + "px";
+                    totalBoss[i].style.top = y + "px";
+                } else if (x > player.offsetLeft + 20) {
+                    y += speedE;
+                    x -= speedE;
+                    totalBoss[i].style.left = x + "px";
+                    totalBoss[i].style.top = y + "px";
+                } else {
+                    y += speedE + 5;
+                    totalBoss[i].style.top = y + "px";
+                }
+            } else {
+                y += speedE;
+                totalBoss[i].style.top = y + "px";
+            }
+
+            if (y > screenSzH) {
+                //pikachuLifePoints -= damageEnemy;
+                totalBoss[i].remove();
+                //totalBoss[i].style.left = y + "px";
+
+            } else {
+                if (
+                    ( // damage contact
+                        (player.offsetTop <= (totalBoss[i].offsetTop + 20)) && // cima tiro com baixo bomba
+                        ((player.offsetTop + 80) >= (totalBoss[i].offsetTop))   // baixo tiro com cima bomba
+                    )
+                    &&
+                    (
+                        (player.offsetLeft <= (totalBoss[i].offsetLeft + 20)) && //esquerda tiro com direita bomba
+                        ((player.offsetLeft + 20) >= (totalBoss[i].offsetLeft)) //direita tiro com esquerda bomba
+                    )
+                ) {
+                    createDamageView(2, player.offsetLeft - 140, player.offsetTop - 150);
+                    totalBoss[i].remove();
+                    pikachuLifePoints -= 100;
+                    document.getElementById("audio3").play();
+
+
+
+                }
+            }
+
+
+        }
+    }
+}
+
+
 function createEnemy() {
-    if (game) {
+    if (game) {        
         y = 0;
         x = Math.random() * screenSzW;
         var enemy = document.createElement("div");
@@ -61,14 +155,12 @@ function createEnemy() {
         enemy.setAttributeNode(att1);
         enemy.setAttributeNode(att2);
 
-
-
         document.body.appendChild(enemy);
         countEnemy--;
 
-
     }
 }
+
 function enemyControl() {
     totalEnemies = document.getElementsByClassName("enemy");
     var size = totalEnemies.length;
@@ -77,6 +169,9 @@ function enemyControl() {
         if (totalEnemies[i]) {
             var y = totalEnemies[i].offsetTop;
             var x = totalEnemies[i].offsetLeft;
+            
+            var random = Math.floor(Math.random()*8);
+            if (random < 2){random = 3};
 
 
 
@@ -86,9 +181,8 @@ function enemyControl() {
                 totalEnemies[i].style.transform = "scaleX(1)";
             }
 
-
-
-            if (y > screenSzH / 3) {
+            console.log(random);
+            if (y > screenSzH / random) {
                 if (x < player.offsetLeft - 20) {
                     y += speedE;
                     x += speedE;
@@ -109,7 +203,7 @@ function enemyControl() {
             }
 
             if (y > screenSzH) {
-                //ashLifePoints -= damageEnemy;
+                //pikachuLifePoints -= damageEnemy;
                 totalEnemies[i].remove();
                 //totalEnemies[i].style.left = y + "px";
 
@@ -127,7 +221,7 @@ function enemyControl() {
                 ) {
                     createDamageView(2, player.offsetLeft - 140, player.offsetTop - 150);
                     totalEnemies[i].remove();
-                    ashLifePoints -= 100;
+                    pikachuLifePoints -= 100;
                     document.getElementById("audio3").play();
 
 
@@ -144,15 +238,17 @@ function createShockWave() {
 
     var sw = document.createElement("pikachu");
     var image = document.createElement("img");
+    var image2 = document.createElement("img");
     var att1 = document.createAttribute("id");
     var att2 = document.createAttribute("style");
     var att3 = document.createAttribute("src");
+    var att5 = document.createAttribute("id");
+    var att6 = document.createAttribute("style");
+    var att7 = document.createAttribute("src");
     var att4 = document.createAttribute("style");
     var shockpy = player.offsetTop - 100;
     var shockpx = player.offsetLeft - 110;
     var pikachuVoices = Math.random() * 999;
-
-    document.getElementById("audio5").play();
 
     if (pikachuVoices <= 333) {
         document.getElementById("audio0").play();
@@ -162,25 +258,50 @@ function createShockWave() {
         document.getElementById("audio2").play();
     };
 
+    document.getElementById("audio8").play();
+
     att1.value = "player-shockwave";
     att2.value = "top:" + shockpy + "px; left:" + shockpx
         + "px;";
     att3.value = "./assets/img/shockwave.gif?" + new Date();
-    att4.value = "  height: 300px; width: 300px; border-radius = 50%;";
+    att4.value = "  height: 300px; width: 300px; border-radius: 50%;";
+    att5.value = "player-shockwave__thunder";
+    att6.value = "top:" + 0 + "px; left:" + (shockpx+70)
+    + "px; height: 100vh;";
+    att7.value = "./assets/img/thunder.gif?" + new Date();
 
     sw.setAttributeNode(att1);
     sw.setAttributeNode(att2);
     image.setAttributeNode(att3);
     image.setAttributeNode(att4);
+    image2.setAttributeNode(att5);
+    image2.setAttributeNode(att6);
+    image2.setAttributeNode(att7);
     sw.appendChild(image);
+    document.body.appendChild(image2);
     document.body.appendChild(sw);
+
     setTimeout(function () { sw.remove(); }, 1200);
+    setTimeout(function () { image2.remove(); }, 700);
+    shockwaveCooldown = true;
+    setTimeout(function() { shockwaveCooldown = false; }, 5000)
+    pikachuEnergyPoints -= 100;
+
+
+
+
+
 
 
 }
 
 function shockwaveControl() {
     var wave = document.getElementById("player-shockwave");
+
+    if (shockwaveCooldown) {
+
+    }
+
 
     if (wave) {
 
@@ -207,6 +328,11 @@ function collisionShockwaveEnemy(wave) {
                     ((player.offsetTop + 57) >= (totalEnemies[i].offsetTop))   // baixo shockwave com cima enemy
                 )
                 &&
+                (
+                    ((player.offsetLeft - 100) <= (totalEnemies[i].offsetLeft + 44)) && //esquerda shockwave com direita enemy
+                    ((player.offsetLeft + 100) >= (totalEnemies[i].offsetLeft)) //direita shockwave com esquerda enemy
+                ) 
+                ||
                 (
                     ((player.offsetLeft - 100) <= (totalEnemies[i].offsetLeft + 44)) && //esquerda shockwave com direita enemy
                     ((player.offsetLeft + 57) >= (totalEnemies[i].offsetLeft)) //direita shockwave com esquerda enemy
@@ -276,13 +402,13 @@ function collisionShotEnemy(shot) {
         if (totalEnemies[i]) {
             if (
                 (
-                    (shot.offsetTop <= (totalEnemies[i].offsetTop + 44)) && // cima tiro com baixo bomba
-                    ((shot.offsetTop + 75) >= (totalEnemies[i].offsetTop))   // baixo tiro com cima bomba
+                    (shot.offsetTop <= (totalEnemies[i].offsetTop + 44)) && // cima tiro com baixo enemy
+                    ((shot.offsetTop + 75) >= (totalEnemies[i].offsetTop))   // baixo tiro com cima enemy
                 )
                 &&
                 (
-                    (shot.offsetLeft <= (totalEnemies[i].offsetLeft + 57)) && //esquerda tiro com direita bomba
-                    ((shot.offsetLeft + 19) >= (totalEnemies[i].offsetLeft)) //direita tiro com esquerda bomba
+                    (shot.offsetLeft <= (totalEnemies[i].offsetLeft + 100)) && //esquerda tiro com direita enemy
+                    ((shot.offsetLeft + 10) >= (totalEnemies[i].offsetLeft)) //direita tiro com esquerda enemy
                 )
             ) {
                 createDamageView(1, totalEnemies[i].offsetLeft - 50, totalEnemies[i].offsetTop - 80);
@@ -375,43 +501,48 @@ function gameLoop() {
 
 }
 
-function createEnemyShooter() {
-    if (game) {
-        y = 0;
-        x = Math.random() * screenSzW;
-        var enemy = document.createElement("div");
-        var att1 = document.createAttribute("class");
-        var att2 = document.createAttribute("style");
-
-        att1.value = "enemy";
-        att2.value = "bottom:" + y + "px; left:" + player.offsetLeft + "px;";
-        enemy.setAttributeNode(att1);
-        enemy.setAttributeNode(att2);
-
-
-
-        document.body.appendChild(enemy);
-        countEnemy--;
-
-
-    }
-}
 
 function gameManager() {
-    ashLifeBar.style.width = ashLifePoints + "px";
+    //life&energy bar control
+    pikachuLifeBar.style.width = pikachuLifePoints + "px";
 
+    if (pikachuEnergyPoints > 300) {
+        pikachuEnergyPoints = 300;
+    }
+    pikachuEnergyBar.style.width = pikachuEnergyPoints + "px";
+
+
+
+
+    // respawn enemies rules
+    if ((countEnemy == 120) || (countEnemy == 80 ) || (countEnemy == 40)) {
+        speedE++
+        countEnemy--;
+
+        clearInterval(createTimeEnemy);
+        createEnemyInterval = createEnemyInterval - 500;
+        createTimeEnemy = setInterval(createEnemy, createEnemyInterval);
+    }
+
+    var bossExists = document.getElementById("boss");
+    if (countEnemy < 5) {
+        clearInterval(createTimeEnemy);
+        if (!(bossExists)){
+            createBoss();
+        }
+    }
+
+
+    // win&lose rules
     if (countEnemy <= 0) {
         //game = false;
         clearInterval(createTimeEnemy);
-
         //screenGame__shadow.style.opacity = "0.2";
         //screenMsg.style.display = "block";
         //screenGame.style.display = "none";
         screenGame__shadow.style.opacity = "0.3";
 
-
-
-    } else if (ashLifePoints <= 0) {
+    } else if (pikachuLifePoints <= 0) {
         game = false;
         clearInterval(createTimeEnemy);
         screenGame__shadow.style.opacity = "0.8";
@@ -429,13 +560,10 @@ function gameManager() {
         document.getElementById("btn-return").innerHTML = "Back to Home";
         document.getElementById("btn-return").addEventListener("click", toMenu);
         document.getElementById("btn-return").style.display = "block";
-
         screenGame.style.display = "none";
         screenMsg.style.display = "block";
         document.getElementById(z.value).style.display = "block";
-
         titleControl("gameover");
-
 
     }
 }
@@ -484,18 +612,23 @@ function restart() {
     screenMsg.style.display = "none";
 
 
-    ashLifePoints = 300;
+    pikachuLifePoints = 300;
+    pikachuEnergyPoints = 300;
+    pikachuEnergyRegen = setInterval(function(){ pikachuEnergyPoints += 10}, 2000);
+
+
     dirxP = diryP = 0;
     pospy = screenSzH / 2;
     pospx = screenSzW / 2;
     player.style.bottom = pospy + "px";
     player.style.left = pospx + "px";
-    countEnemy = 100;
+    countEnemy = 150;
     speedE = 3;
     screenSzH = window.innerHeight;
     screenSzW = window.innerWidth;
     game = true;
-    createTimeEnemy = setInterval(createEnemy, 1500);
+    createEnemyInterval = 1500;
+    createTimeEnemy = setInterval(createEnemy, createEnemyInterval);
     screenGame.style.display = "block";
     screenGame__shadow.style.opacity = "0";
     document.getElementById("btn-return").style.display = "none";
@@ -522,7 +655,9 @@ function init() {
         "assets/audio/fearow.mp3", //4
         "assets/audio/electricshock.mp3", //5
         "assets/audio/battle.mp3", //6
-        "assets/audio/physicalhit.mp3" //7
+        "assets/audio/physicalhit.mp3", //7
+        "assets/audio/thundercrack.mp3" //8
+
 
     ];
 
@@ -572,11 +707,12 @@ function init() {
     damageEnemy = 50;
 
     // ash
-    ashLifePoints = 300;
-    ashLifeBar = document.getElementById("ash-lifebar");
-    ashLifeBar.style.width = ashLifePoints + "px";
-    ashEnergyBar = document.getElementById("ash-energybar");
-    ashEnergyBar.style.width = ashLifePoints + "px";
+    pikachuLifePoints = 300;
+    pikachuEnergyPoints = 300;
+    pikachuLifeBar = document.getElementById("pikachu-lifebar");
+    pikachuLifeBar.style.width = pikachuLifePoints + "px";
+    pikachuEnergyBar = document.getElementById("pikachu-energybar");
+    pikachuEnergyBar.style.width = pikachuEnergyPoints + "px";
 
 
     // explosions and sounds

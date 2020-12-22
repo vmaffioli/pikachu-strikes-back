@@ -115,17 +115,17 @@ body{
     
 }
 
-#player-shockwave {
+#boss{
+  width: 300px;
+  height: 250px;
+  background-image: url("./assets/img/badfearow.gif");
+  background-size: cover;
+
   position: absolute;
-  z-index: 10;
-  width: 200px;
-  height: 200px;
+  z-index: 1;
+  
 }
 
-#player-shockwave image {
-  height: 400px;
-  width: 400px;
-}
 
 .player-shot {
     width: 50px;
@@ -241,9 +241,24 @@ body{
   }
   
 
+  #player-shockwave {
+    position: absolute;
+    z-index: 10;
+    width: 200px;
+    height: 200px;
+  }
+  
+  #player-shockwave image {
+    height: 400px;
+    width: 400px;
+  }
+  
 
+#player-shockwave__thunder{
+  position: absolute;
+  z-index: 10;
 
-
+}
 
 
 #title-container {
@@ -383,7 +398,7 @@ body{
 }
 
 
-#ash-lifebar {
+#pikachu-lifebar {
   position: absolute;
   margin: 5px 0px 0px 0px;
   padding-top: 5px;
@@ -402,7 +417,7 @@ body{
   border-radius: 0 15px 15px 0;
 }
 
-#ash-energybar {
+#pikachu-energybar {
   position: absolute;
   margin: 27px 0px 0px 0px;
   padding-top: 3px;
