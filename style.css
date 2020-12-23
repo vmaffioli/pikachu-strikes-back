@@ -136,6 +136,33 @@ body{
     position: absolute;
 }
 
+.boss-shot {
+  width: 50px;
+  height: 50px;
+  background-image: url("./assets/img/bolt.gif");
+  background-repeat: no-repeat;
+  border-radius: 6px;
+  position: absolute;
+}
+
+.boss-tornado {
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%);  width: 400px;
+  bottom: 0;
+
+  height: 400px;
+  width: 400px;
+
+  background-image: url("./assets/img/tornado.gif");
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  display: none;
+
+}
+
+
 .enemy-explosion {
     width: 100px;
     height: 100px;
@@ -155,7 +182,7 @@ body{
     
 }
 
-.video-player {
+.audio-player {
     display: none;
     position: absolute;
 
@@ -408,7 +435,7 @@ body{
   border-color: #000;
   border-width: 0.5px;
 
-  background: rgb(14, 255, 1);
+  background-color: rgb(14, 255, 1);
   
   color: #fff;
   justify-content: center;
