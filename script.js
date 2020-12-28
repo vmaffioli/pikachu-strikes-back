@@ -51,6 +51,10 @@ function keyUp() {
         diryP = 0;
     }
 
+    if ((key == 37) || (key == 39)) { //up
+        dirxP = 0;
+    }
+
 
 }
 
@@ -827,6 +831,7 @@ function restart() {
 
     document.getElementById("instructions").style.display = "block";
     document.getElementById("audio6").play();
+    document.getElementById("audio6").volume = 0.1;
 
 
     setTimeout(
@@ -899,6 +904,7 @@ function init() {
 
 
 
+
     //ini screen
     screenSzH = window.innerHeight;
     screenSzW = window.innerWidth;
@@ -907,7 +913,7 @@ function init() {
     screenGame__shadow = document.getElementById("screen-game__shadow");
     document.getElementById("instructions").style.display = "none";
 
-
+    
 
     // ini player
     dirxP = diryP = 0;
