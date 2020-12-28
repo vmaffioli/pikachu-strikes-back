@@ -355,7 +355,7 @@ function shotBoss(posx, posy) {
     var att2 = document.createAttribute("style");
     var pikachuVoices = Math.random() * 999;
 
-    document.getElementById("audio4").play();
+    document.getElementById("audio").play();
 
     att1.value = "boss-shot";
     att2.value = "top:" + posy + "px; left:" + posx + "px";
@@ -585,12 +585,16 @@ function createDamageView(t, x, y) { // 1 explosion      2 pikachu-damage
         att3.value = "./assets/img/explosion.gif?" + iii;
         document.getElementById("audio5").play();
         iii++;
+        points += 100;
+
     } else if (t === 2) {
         att0.value = "hit" + random;
         att1.value = "pikachu-hit";
         att2.value = "top:" + y + "px; left:" + x + "px;";
         att3.value = "./assets/img/hitpikachublood.gif?" + new Date();
         document.getElementById("audio7").play();
+
+
 
 
     }
@@ -602,8 +606,6 @@ function createDamageView(t, x, y) { // 1 explosion      2 pikachu-damage
     damage.appendChild(image);
     document.body.appendChild(damage);
     ie++;
-    points += 100;
-    console.log(points);
     setTimeout(
         function () {
             document.getElementById(att0.value).remove();
@@ -670,15 +672,19 @@ function gameManager() {
     pikachuEnergyBar.style.width = pikachuEnergyPoints + "px";
 
 
+    if (game) {
+        document.getElementById("instructions").style.display = "none";
+    }
+        
 
 
     // respawn enemies rules
-    if ((countEnemy == 120) || (countEnemy == 80) || (countEnemy == 40)) {
+    if ((countEnemy == 190) || (countEnemy == 170) || (countEnemy == 120) || (countEnemy == 60)) {
         speedE++
         countEnemy--;
 
         clearInterval(createTimeEnemy);
-        createEnemyInterval = createEnemyInterval - 500;
+        createEnemyInterval = createEnemyInterval - 300;
         createTimeEnemy = setInterval(createEnemy, createEnemyInterval);
     }
 
@@ -693,7 +699,11 @@ function gameManager() {
 
     // win&lose rules
     if (countEnemy < 0) {
+        document.getElementById("audio6").pause();
+
         game = false;
+        player.style.display = "block";
+
         clearInterval(createTimeEnemy);
         screenGame__shadow.style.opacity = "0.2";
         screenMsg.style.display = "block";
@@ -702,13 +712,19 @@ function gameManager() {
         var ps = points.toString();
 
         titlesGameoverParam = [
-            ["main-title__top", "GAME OVER!!!", "#c52018", "-20%", "18%", "100px"],
+            ["main-title__top", "YOU WINS!!!", "#c52018", "-20%", "18%", "100px"],
             ["main-title__middle", "Your Score:", "#f6bd20", "15%", "18%", "90px"],
             ["main-title__bottom", ps + " points.", "#f6bd20", "35%", "18%", "90px"]];
 
         titleControl("gameover");
 
     } else if (pikachuLifePoints <= 0) {
+        document.getElementById("audio6").pause();
+
+
+        player.style.display = "block";
+    
+
         game = false;
         clearInterval(createTimeEnemy);
         screenGame__shadow.style.opacity = "0.8";
@@ -729,6 +745,12 @@ function gameManager() {
         screenGame.style.display = "none";
         screenMsg.style.display = "block";
         document.getElementById(z.value).style.display = "block";
+
+        var ps = points.toString();
+        titlesGameoverParam = [
+            ["main-title__top", "GAME OVER!!!", "#c52018", "-20%", "18%", "100px"],
+            ["main-title__middle", "Your Score:", "#f6bd20", "15%", "18%", "90px"],
+            ["main-title__bottom", ps + " points.", "#f6bd20", "35%", "18%", "90px"]]; 
         titleControl("gameover");
 
     }
@@ -764,6 +786,8 @@ function toMenu() {
 
 function restart() {
 
+
+
     clearInterval(createTimeEnemy);
     cancelAnimationFrame(frames);
     totalEnemies = document.getElementsByClassName("enemy");
@@ -789,7 +813,7 @@ function restart() {
     pospx = screenSzW / 2;
     player.style.bottom = pospy + "px";
     player.style.left = pospx + "px";
-    countEnemy = 150;
+    countEnemy = 200;
     bossDir = false;
     ib = 0;
     iii = 0;
@@ -800,16 +824,24 @@ function restart() {
     screenSzW = window.innerWidth;
     createEnemyInterval = 1500;
 
+
+    document.getElementById("instructions").style.display = "block";
+    document.getElementById("audio6").play();
+
+
     setTimeout(
         function () {
+            player.style.display = "block";
             createTimeEnemy = setInterval(createEnemy, createEnemyInterval);
             screenGame.style.display = "block";
             screenGame__shadow.style.opacity = "0";
             document.getElementById("btn-return").style.display = "none";
             document.getElementById("btn-ingame-quit").style.display = "block";
+            
             game = true;
         }
-        , 3000)
+        , 5000);
+
 
 
 
@@ -873,6 +905,7 @@ function init() {
     screenGame = document.getElementById("screen-game");
     screenMsg = document.getElementById("screen-msg");
     screenGame__shadow = document.getElementById("screen-game__shadow");
+    document.getElementById("instructions").style.display = "none";
 
 
 
@@ -887,9 +920,11 @@ function init() {
     player.style.left = pospx + "px";
 
     // ini enemy
-    countEnemy = 150;
+    countEnemy = 200;
     speedE = 2;
     damageEnemy = 50;
+    iii = 0;
+
 
     // ash
     pikachuLifePoints = 300;

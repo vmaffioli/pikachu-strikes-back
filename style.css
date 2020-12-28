@@ -464,6 +464,24 @@ body{
   border-radius: 0 15px 15px 0;
 }
 
+#instructions {
+  position: absolute;
+  z-index: 10;
+
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%);
+
+  
+  top: 50%;
+  margin-bottom: -50%;
+  transform: translate(-50%);
+
+  color: red;
+  justify-content: center;
+
+}
+
 
 #pikachu {
     position: absolute;
@@ -475,6 +493,7 @@ body{
     background-size: cover;
     z-index: 2;
     margin-top: 4%;
+    display: none;
 }
 
 
