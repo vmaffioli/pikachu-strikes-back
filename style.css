@@ -84,18 +84,19 @@
 body{
     overflow-x: hidden;
     overflow-y: hidden;
-
+    padding: 0;
+    margin: 0;
 
 }
 
 .screen-msg {
     position: fixed;
-    top: 30px;
+    top: 10%;
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%);
-    width: 1000px;
-    height: 600px;
+    width: 70vw;
+    height: 80vh;
     display: none;
     background-repeat: no-repeat;
     background-position: center;
@@ -115,18 +116,6 @@ body{
     
 }
 
-#boss{
-  width: 300px;
-  height: 250px;
-  background-image: url("./assets/img/badfearow.gif");
-  background-size: cover;
-
-  position: absolute;
-  z-index: 1;
-  
-}
-
-
 .player-shot {
     width: 50px;
     height: 50px;
@@ -135,33 +124,6 @@ body{
     border-radius: 6px;
     position: absolute;
 }
-
-.boss-shot {
-  width: 50px;
-  height: 50px;
-  background-image: url("./assets/img/bolt.gif");
-  background-repeat: no-repeat;
-  border-radius: 6px;
-  position: absolute;
-}
-
-.boss-tornado {
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%);  width: 400px;
-  bottom: 0;
-
-  height: 400px;
-  width: 400px;
-
-  background-image: url("./assets/img/tornado.gif");
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: absolute;
-  display: none;
-
-}
-
 
 .enemy-explosion {
     width: 100px;
@@ -290,6 +252,8 @@ body{
 
 #title-container {
     display: block;
+    position: static;
+
 }
 
 #main-title__top {
@@ -304,7 +268,7 @@ body{
 }
 
 #main-title__bottom {
-    z-index: 7;
+    z-index: 9;
 
 }
 
@@ -396,7 +360,7 @@ body{
 #screen-game {
     display: none;
     z-index: 2;
-    height: 101vh;
+    height: 100vh;
     top: 0;
 
 }
@@ -414,13 +378,11 @@ body{
 }
 
 #painel {
-    width: 99vw;
-    height: 99vh;
+    width: 100vw;
+    height: 100vh;
     background-image: url('assets/img/gamebg.png');
     background-repeat: no-repeat;
-    background-size: 101vw 101vh;
-    box-shadow: 1px 1px 10px 20px #000000;
-
+    background-size: 100vw 100vh;
 
 }
 
