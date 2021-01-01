@@ -1,14 +1,14 @@
 var diryP, dirxP, player, pospx, pospy;
-var speedS, speedE, speedP, speedB;
+var speedS, speedE, speedP; 
 var screenSzW, screenSzH;
 var game;
 var frames;
 var countEnemy, painelcountEnemy, createTimeEnemy, damageEnemy, createEnemyInterval, totalEnemies;
 var pikachuLifePoints, pikachuLifeBar, pikachuEnergyPoints, pikachuEnergyBar, pikachuEnergyRegen;
-var ie, x, y, z, idir, iii;
+var ie, x, y, z, iii;
 var screenMsg, screenGame, screenGame__shadow;
 var titlesMainParam, titlesGameoverParam;
-var shockwaveCooldown, gettingBack, bossTackleCooldow, ib, boss, bossLifePoints, bossDir;
+var shockwaveCooldown ;
 var points;
 
 
@@ -319,23 +319,7 @@ function collisionShotEnemy(shot) {
         }
     }
 
-    if (boss) {
-        if (
-            (
-                (shot.offsetTop <= (boss.offsetTop + 44)) && // cima tiro com baixo boss
-                ((shot.offsetTop + 75) >= (boss.offsetTop))   // baixo tiro com cima boss
-            )
-            &&
-            (
-                (shot.offsetLeft <= (boss.offsetLeft + 100)) && //esquerda tiro com direita boss
-                ((shot.offsetLeft + 10) >= (boss.offsetLeft)) //direita tiro com esquerda boss
-            )
-        ) {
-            createDamageViewBoss(boss.offsetLeft - 50, boss.offsetTop - 80);
-            shot.remove();
-
-        }
-    }
+    
 }
 
 function createDamageView(t, x, y) { // 1 explosion      2 pikachu-damage
@@ -556,12 +540,9 @@ function restart() {
     player.style.bottom = pospy + "px";
     player.style.left = pospx + "px";
     countEnemy = 200;
-    bossDir = false;
-    ib = 0;
     iii = 0;
     points = 0;
     speedE = 3;
-    speedB = 2;
     screenSzH = window.innerHeight;
     screenSzW = window.innerWidth;
     createEnemyInterval = 1500;
