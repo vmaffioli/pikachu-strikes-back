@@ -36,7 +36,7 @@ function keyDw() {
 
     if (key == 32) {//spacebar / shot
         //shot
-        if (!(shotCooldown)) {
+        if (!shotCooldown) {
             shot(pospx + 40, pospy + 40);
             shotCooldown = true;
         }
