@@ -8,7 +8,7 @@ var pikachuLifePoints, pikachuLifeBar, pikachuEnergyPoints, pikachuEnergyBar, pi
 var ie, x, y, z, iii;
 var screenMsg, screenGame, screenGame__shadow;
 var titlesMainParam, titlesGameoverParam;
-var shockwaveCooldown ;
+var shockwaveCooldown, shotCooldown;
 var points;
 
 
@@ -36,10 +36,12 @@ function keyDw() {
 
     if (key == 32) {//spacebar / shot
         //shot
-        shot(pospx + 40, pospy + 40);
+        if (!(shotCooldown)) {
+            shot(pospx + 40, pospy + 40);
+            shotCooldown = true;
+        }
 
     }
-
 }
 
 function keyUp() {
@@ -50,6 +52,10 @@ function keyUp() {
 
     if ((key == 37) || (key == 39)) { //up
         dirxP = 0;
+    }
+
+    if (key == 32) {
+        shotCooldown = false;
     }
 
 
@@ -622,6 +628,7 @@ function init() {
     player = document.getElementById("pikachu");
     player.style.top = pospy + "px";
     player.style.left = pospx + "px";
+    shotCooldown = false;
 
     // ini enemy
     countEnemy = 200;
