@@ -2,7 +2,7 @@
   "name": "pikachu-strikes-back",
   "version": "1.0.0",
   "description": "This is a web page with shooting game, help Pikachu to fight against the spearows",
-  "main": "script.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
